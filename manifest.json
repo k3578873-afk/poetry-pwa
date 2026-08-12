@@ -1,6 +1,6 @@
 {
   "name": "Maruf's Poetry",
-  "short_name": "PWA App",
+  "short_name": "Maruf's Poetry",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f141d",
