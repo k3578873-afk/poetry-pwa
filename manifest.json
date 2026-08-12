@@ -1,5 +1,5 @@
 {
-  "name": "Мое PWA Приложение",
+  "name": "Maruf's Poetry",
   "short_name": "PWA App",
   "start_url": "./index.html",
   "display": "standalone",
