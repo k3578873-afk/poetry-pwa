@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pwa-cache-v1';
+const CACHE_NAME = 'pwa-cache-v3';
 
 const ASSETS_TO_CACHE = [
   './',
@@ -9,7 +9,6 @@ const ASSETS_TO_CACHE = [
   'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap'
 ];
 
-// Установка: кэшируем файлы и активируем немедленно
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
@@ -19,7 +18,6 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Активация: очищаем старый кэш и берем управление под контроль
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -34,7 +32,6 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Перехват запросов: отдаем из кэша, если нет сети
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
