@@ -1,6 +1,6 @@
 {
   "name": "Maruf's Poetry",
-  "short_name": "Maruf's Poetry",
+  "short_name": "Моя поэзия",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f141d",
