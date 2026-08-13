@@ -36,7 +36,7 @@
         }
 
         header {
-            padding: 20px;
+            padding: 16px 20px;
             border-bottom: 1px solid var(--card-border);
             background: rgba(15, 20, 29, 0.9);
             backdrop-filter: blur(10px);
@@ -46,8 +46,15 @@
 
         .brand h1 {
             font-family: var(--font-serif);
-            font-size: 26px;
+            font-size: 24px;
             color: var(--accent-gold);
+            line-height: 1.1;
+        }
+
+        .brand .count {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
         }
 
         .btn-add {
@@ -62,15 +69,40 @@
 
         main { padding: 20px; max-width: 600px; margin: 0 auto; width: 100%; }
 
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-bar { flex: 1; }
         .search-bar input {
             width: 100%;
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: 12px;
             color: var(--text-primary);
             outline: none;
-            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-secondary);
+            padding: 0 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .filter-btn.active {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            background: rgba(226, 183, 101, 0.1);
         }
 
         .poem-card {
@@ -81,13 +113,35 @@
             margin-bottom: 16px;
             cursor: pointer;
             border-left: 3px solid var(--accent-gold);
+            position: relative;
             transition: transform 0.1s ease;
         }
 
         .poem-card:active { transform: scale(0.98); }
 
-        .poem-card h3 { font-family: var(--font-serif); font-size: 22px; color: var(--text-primary); }
-        .poem-card .date { font-size: 12px; color: var(--text-secondary); margin: 4px 0 10px; }
+        .poem-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .poem-card h3 { 
+            font-family: var(--font-serif); 
+            font-size: 22px; 
+            color: var(--text-primary);
+            padding-right: 10px;
+        }
+
+        .fav-btn {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 2px;
+            line-height: 1;
+        }
+
         .poem-card .preview {
             font-family: var(--font-serif);
             font-size: 16px; color: #cbd5e1;
@@ -120,17 +174,24 @@
     <header>
         <div class="brand">
             <h1>Maruf's Poetry</h1>
+            <div class="count" id="poemsCount">Всего стихов: 0</div>
         </div>
         <button class="btn-add" onclick="openEditModal()">+ Стих</button>
     </header>
 
     <main>
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Поиск стихов..." oninput="render()">
+        <div class="controls">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Поиск..." oninput="render()">
+            </div>
+            <button class="filter-btn" id="favFilterBtn" onclick="toggleFavFilter()">
+                <span>❤️</span> Избранные
+            </button>
         </div>
         <div id="poemsGrid"></div>
     </main>
 
+    <!-- Модалка создания/редактирования -->
     <div class="modal" id="editModal">
         <div class="modal-content">
             <h2 id="modalTitle" style="color:var(--accent-gold); font-family:var(--font-serif);">Новый стих</h2>
@@ -147,10 +208,13 @@
         </div>
     </div>
 
+    <!-- Модалка просмотра -->
     <div class="modal" id="viewModal">
         <div class="modal-content">
-            <h2 id="viewTitle" style="color:var(--accent-gold); font-family:var(--font-serif);"></h2>
-            <div id="viewDate" style="font-size:12px; color:var(--text-secondary); margin-top:4px;"></div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2 id="viewTitle" style="color:var(--accent-gold); font-family:var(--font-serif);"></h2>
+                <button class="fav-btn" id="viewFavBtn" onclick="toggleFavCurrent()">🤍</button>
+            </div>
             <div id="viewBody" class="view-text"></div>
             <div class="actions" style="margin-top:20px;">
                 <button onclick="closeModal('viewModal')" style="background:transparent; color:#aaa; border:none; cursor:pointer;">Закрыть</button>
@@ -162,6 +226,7 @@
     <script>
         let poems = JSON.parse(localStorage.getItem('my_poems') || '[]');
         let currentActiveId = null;
+        let showOnlyFavs = false;
 
         function escapeHtml(str) {
             return String(str)
@@ -172,23 +237,60 @@
                 .replace(/'/g, "&#039;");
         }
 
+        function toggleFavFilter() {
+            showOnlyFavs = !showOnlyFavs;
+            document.getElementById('favFilterBtn').classList.toggle('active', showOnlyFavs);
+            render();
+        }
+
+        function toggleFav(id, event) {
+            if (event) event.stopPropagation();
+            const p = poems.find(x => x.id == id);
+            if (p) {
+                p.isFav = !p.isFav;
+                localStorage.setItem('my_poems', JSON.stringify(poems));
+                render();
+                if (currentActiveId == id) updateViewModalFav();
+            }
+        }
+
+        function toggleFavCurrent() {
+            if (currentActiveId) toggleFav(currentActiveId);
+        }
+
+        function updateViewModalFav() {
+            const p = poems.find(x => x.id == currentActiveId);
+            if (p) {
+                document.getElementById('viewFavBtn').innerText = p.isFav ? '❤️' : '🤍';
+            }
+        }
+
         function render() {
             const q = document.getElementById('searchInput').value.trim().toLowerCase();
             const grid = document.getElementById('poemsGrid');
             
-            const filtered = poems.filter(p => 
+            // Обновляем счетчик стихов
+            document.getElementById('poemsCount').innerText = `Всего стихов: ${poems.length}`;
+
+            let filtered = poems.filter(p => 
                 p.title.toLowerCase().includes(q) || p.body.toLowerCase().includes(q)
             );
 
+            if (showOnlyFavs) {
+                filtered = filtered.filter(p => p.isFav);
+            }
+
             if (filtered.length === 0) {
-                grid.innerHTML = '<p style="text-align:center; color:#666; margin-top:40px;">Записи не найдены</p>';
+                grid.innerHTML = `<p style="text-align:center; color:#666; margin-top:40px;">${showOnlyFavs ? 'Нет избранных стихов' : 'Записи не найдены'}</p>`;
                 return;
             }
 
             grid.innerHTML = filtered.map(p => `
                 <div class="poem-card" onclick="viewPoem(${p.id})">
-                    <h3>${escapeHtml(p.title)}</h3>
-                    <div class="date">${p.date}</div>
+                    <div class="poem-header">
+                        <h3>${escapeHtml(p.title)}</h3>
+                        <button class="fav-btn" onclick="toggleFav(${p.id}, event)">${p.isFav ? '❤️' : '🤍'}</button>
+                    </div>
                     <div class="preview">${escapeHtml(p.body)}</div>
                 </div>
             `).join('');
@@ -220,8 +322,8 @@
             if (!p) return;
 
             document.getElementById('viewTitle').innerText = p.title;
-            document.getElementById('viewDate').innerText = p.date;
             document.getElementById('viewBody').innerText = p.body;
+            updateViewModalFav();
             document.getElementById('viewModal').classList.add('active');
         }
 
@@ -243,7 +345,7 @@
                 const p = poems.find(x => x.id == id);
                 if (p) { p.title = title; p.body = body; }
             } else {
-                poems.unshift({ id: Date.now(), title, body, date: new Date().toLocaleDateString('ru-RU') });
+                poems.unshift({ id: Date.now(), title, body, isFav: false });
             }
             
             localStorage.setItem('my_poems', JSON.stringify(poems));
