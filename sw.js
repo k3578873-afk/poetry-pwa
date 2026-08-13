@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pwa-cache-v6';
+const CACHE_NAME = 'pwa-cache-v7';
 
 const ASSETS_TO_CACHE = [
   './',
