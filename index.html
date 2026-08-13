@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maruf's Poetry</title>
+    <title>Моя поэзия</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f141d">
@@ -72,7 +72,7 @@
         .controls {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .search-bar { flex: 1; }
@@ -103,6 +103,24 @@
             border-color: var(--accent-gold);
             color: var(--accent-gold);
             background: rgba(226, 183, 101, 0.1);
+        }
+
+        .backup-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .backup-btn {
+            flex: 1;
+            background: transparent;
+            border: 1px dashed var(--card-border);
+            color: var(--text-secondary);
+            padding: 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            cursor: pointer;
+            text-align: center;
         }
 
         .poem-card {
@@ -188,10 +206,16 @@
                 <span>❤️</span> Избранные
             </button>
         </div>
+
+        <div class="backup-bar">
+            <button class="backup-btn" onclick="exportBackup()">💾 Сохранить резервную копию</button>
+            <button class="backup-btn" onclick="document.getElementById('importFile').click()">📂 Восстановить стихи</button>
+            <input type="file" id="importFile" accept=".json" style="display:none" onchange="importBackup(event)">
+        </div>
+
         <div id="poemsGrid"></div>
     </main>
 
-    <!-- Модалка создания/редактирования -->
     <div class="modal" id="editModal">
         <div class="modal-content">
             <h2 id="modalTitle" style="color:var(--accent-gold); font-family:var(--font-serif);">Новый стих</h2>
@@ -208,7 +232,6 @@
         </div>
     </div>
 
-    <!-- Модалка просмотра -->
     <div class="modal" id="viewModal">
         <div class="modal-content">
             <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -269,7 +292,6 @@
             const q = document.getElementById('searchInput').value.trim().toLowerCase();
             const grid = document.getElementById('poemsGrid');
             
-            // Обновляем счетчик стихов
             document.getElementById('poemsCount').innerText = `Всего стихов: ${poems.length}`;
 
             let filtered = poems.filter(p => 
@@ -360,6 +382,34 @@
                 closeModal('editModal');
                 render();
             }
+        }
+
+        // Экспорт и импорт рез. копии
+        function exportBackup() {
+            if (poems.length === 0) return alert('У вас пока нет стихов для сохранения.');
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(poems));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", "marufs_poetry_backup.json");
+            dlAnchorElem.click();
+        }
+
+        function importBackup(event) {
+            const fileReader = new FileReader();
+            fileReader.onload = function(e) {
+                try {
+                    const importedPoems = JSON.parse(e.target.result);
+                    if (Array.isArray(importedPoems)) {
+                        poems = importedPoems;
+                        localStorage.setItem('my_poems', JSON.stringify(poems));
+                        render();
+                        alert('Стихи успешно восстановлены!');
+                    }
+                } catch(err) {
+                    alert('Ошибка при чтении файла резервной копии.');
+                }
+            };
+            fileReader.readAsText(event.target.files[0]);
         }
 
         render();
