@@ -1,0 +1,34 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Public poetry library: everyone may read; only the designated admin may write.
+    match /poems/{poemId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null
+        && request.auth.uid == "GgKTFgrTyKUUtxZwL8QEy4BlCRs1";
+    }
+
+    // Each signed-in user can read/write only their own favorites.
+    match /users/{userId}/favorites/{poemId} {
+      allow read, create, update, delete: if request.auth != null
+        && request.auth.uid == userId;
+    }
+
+    // Each signed-in user can read/write only their own cloud quotes.
+    match /users/{userId}/quotes/{quoteId} {
+      allow read, create, update, delete: if request.auth != null
+        && request.auth.uid == userId;
+    }
+
+    // Each signed-in user can read/write only their own quote favorites.
+    match /users/{userId}/quoteFavorites/{quoteId} {
+      allow read, create, update, delete: if request.auth != null
+        && request.auth.uid == userId;
+    }
+
+    // Deny all other documents by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
