@@ -1,0 +1,20 @@
+{
+  "name": "Моя Поэзия",
+  "short_name": "Поэзия",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#211a19",
+  "theme_color": "#211a19",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
