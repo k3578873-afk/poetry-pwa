@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /poems/{poemId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null
+        && request.auth.uid == "REPLACE_WITH_YOUR_FIREBASE_UID";
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}
