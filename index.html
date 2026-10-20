@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Моя Поэзия</title>
+  <meta name="theme-color" content="#071426">
+  <link rel="manifest" href="manifest.json">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:dark;--bg:#071426;--paper:#0d2039;--paper-deep:#142b48;--ink:#f7f8fc;--muted:#b7c5d9;--line:#2a4260;--gold:#e1eaf7;--gold-soft:#ffffff;--forest:#eaf1fb;--shadow:0 14px 36px rgba(0,0,0,.24);--serif:'Cormorant Garamond',Georgia,serif;--sans:'Manrope',sans-serif}
+    :root[data-theme="light"]{color-scheme:light;--bg:#f5f2eb;--paper:#fffdf8;--paper-deep:#e9e4d9;--ink:#102541;--muted:#56667a;--line:#d5dce5;--gold:#173452;--gold-soft:#102541;--forest:#102541;--shadow:0 12px 30px rgba(15,35,58,.08)}
+    :root[data-theme="dark"]{color-scheme:dark;--bg:#050f1f;--paper:#0b1c32;--paper-deep:#132945;--ink:#ffffff;--muted:#b7c5d9;--line:#263e5c;--gold:#e5edf9;--gold-soft:#ffffff;--forest:#eaf1fb;--shadow:0 14px 36px rgba(0,0,0,.28)}
+    :root[data-theme="light"] .brand-logo{filter:brightness(0) saturate(100%) invert(12%) sepia(24%) saturate(1372%) hue-rotate(176deg) brightness(92%) contrast(94%)}
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent} body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh;transition:background .2s,color .2s}
+    button,input,select,textarea{font:inherit}button{cursor:pointer;color:inherit}
+    header{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:0;position:relative;min-width:0;flex:0 1 auto}.brand-logo{display:block;width:clamp(118px,36vw,164px);max-height:88px;height:auto;object-fit:contain;object-position:left center;flex:0 1 auto;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}.header-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}.header-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .header-count{font-size:13px;font-weight:600;color:var(--gold);font-variant-numeric:tabular-nums;min-width:20px;text-align:center}.icon-btn{width:44px;height:44px;border:1px solid var(--line);background:var(--paper);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:22px}.btn-add{background:var(--forest);color:var(--bg);border:1px solid var(--forest);padding:10px 15px;border-radius:14px;font-weight:600}.btn-quiet{background:var(--paper);color:var(--ink);border:1px solid var(--line);padding:10px 13px;border-radius:14px}.btn-quiet.active,.filter-btn.active{border-color:var(--gold);color:var(--gold)}
+    main{max-width:760px;margin:0 auto;padding:16px 20px 56px}.collection-head{padding:18px 0 22px;border-bottom:1px solid var(--line);margin-bottom:20px}.eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}.collection-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}.collection-row h2{font-family:var(--serif);font-size:clamp(31px,7vw,46px);font-weight:600;line-height:1.05;color:var(--gold)}.collection-row h2 span{font-variant-numeric:lining-nums}.collection-note{font-family:var(--serif);font-style:italic;color:var(--muted);font-size:16px;margin-top:7px}
+    .toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:12px}.search-bar{position:relative}.search-bar input,.control,.modal-content input,.modal-content textarea,.modal-content select{width:100%;background:var(--paper);border:1px solid var(--line);padding:14px 15px;border-radius:12px;color:var(--ink);outline:none;min-width:0}.search-bar input{font-size:16px;min-height:54px}.search-bar input:focus,.control:focus,.modal-content input:focus,.modal-content textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 15%,transparent)}.filter-row{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:12px 0 18px}.filter-row .btn-quiet{min-height:44px}.control{padding:10px 12px}.filter-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}.quote-shelf{position:relative;margin:18px 0 22px;padding:0;background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);height:auto;max-height:42vh;overflow-x:hidden;overflow-y:auto;touch-action:pan-y;scroll-snap-type:y mandatory;scrollbar-width:none;-ms-overflow-style:none;scroll-behavior:smooth;transition:height .42s cubic-bezier(.22,.75,.25,1);-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}.quote-shelf::-webkit-scrollbar{display:none}.quote-track{display:flex;flex-direction:column;align-items:stretch;width:100%}.quote-slide{position:relative;flex:0 0 auto;width:100%;min-width:0;min-height:0;box-sizing:border-box;padding:20px 22px 19px 32px;scroll-snap-align:start;scroll-snap-stop:always;overflow-wrap:anywhere;overscroll-behavior:contain;animation:quoteEnter .55s cubic-bezier(.2,.7,.2,1) both}.quote-slide:before{content:"";position:absolute;left:13px;top:0;bottom:0;border-left:1px solid color-mix(in srgb,var(--gold) 45%,transparent)}.quote-text{font-family:var(--serif);font-size:clamp(22px,5vw,29px);line-height:1.3;font-style:italic;min-height:0;overflow-wrap:anywhere;white-space:pre-wrap}.quote-attribution{font-size:11px;letter-spacing:1px;color:var(--muted);margin:10px 0 0;text-transform:uppercase}.quote-scroll-hint{display:none}.quote-count{display:none}.quote-enter{animation:quoteEnter .55s cubic-bezier(.2,.7,.2,1) both}@keyframes quoteEnter{from{opacity:.2;transform:translateY(16px);filter:blur(2px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}.quote-manage{display:flex;gap:8px;margin-top:10px}.quote-manage button{flex:1}.sync-line{color:var(--muted);font-size:12px;margin:15px 0 22px;line-height:1.5;overflow-wrap:anywhere}
+    #poemsGrid{display:grid;gap:16px}.poem-card{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:23px 21px 22px 25px;cursor:pointer;box-shadow:var(--shadow);transition:transform .15s,border-color .15s;overflow:hidden}.poem-card:before{content:"";position:absolute;left:9px;top:0;bottom:0;border-left:1px solid color-mix(in srgb,var(--gold) 42%,transparent)}.poem-card:active{transform:scale(.995)}.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.poem-card h3{font-family:var(--serif);font-size:clamp(25px,5vw,32px);font-weight:600;line-height:1.05;overflow-wrap:anywhere}.date{font-size:12px;letter-spacing:.5px;color:var(--muted);margin:8px 0 16px}.preview{font-family:var(--serif);font-size:clamp(18px,4vw,22px);line-height:1.55;color:var(--ink);white-space:pre-line;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;padding-left:10px;border-left:1px solid var(--line)}.category-pill{display:inline-block;font-size:11px;letter-spacing:.5px;color:var(--gold);border:1px solid var(--line);border-radius:30px;padding:5px 9px;margin-top:15px}.star-btn{border:1px solid var(--line);background:var(--bg);color:var(--muted);border-radius:50%;width:42px;height:42px;font-size:21px;flex-shrink:0}.star-btn.active{color:var(--gold);border-color:var(--gold)}
+    #adminPanel{display:none}.modal{display:none;position:fixed;inset:0;background:rgba(8,13,11,.58);backdrop-filter:blur(5px);z-index:60;align-items:center;justify-content:center;padding:14px}.modal.active{display:flex}.modal-content{background:var(--paper);border:1px solid var(--line);border-radius:22px;width:100%;max-width:560px;padding:22px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow)}.modal-content input,.modal-content textarea,.modal-content select{margin-top:8px}.modal-content label{display:block;color:var(--muted);font-size:12px;letter-spacing:.4px;margin-top:14px}.modal-content textarea{font-family:var(--serif);font-size:19px;height:210px;line-height:1.55;resize:vertical}.actions{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px}.actions-right{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}.view-text{font-family:var(--serif);font-size:23px;line-height:1.8;white-space:pre-wrap;margin-top:22px;overflow-wrap:anywhere;padding:18px 0 18px 16px;border-left:1px solid var(--line)}.view-meta{font-size:12px;color:var(--muted);margin-top:8px}.reader-mode .modal-content{max-width:680px;padding:clamp(24px,6vw,48px);background:var(--paper)}.reader-mode #viewTitle{font-size:clamp(32px,7vw,46px)}.reader-mode .view-text{font-size:clamp(23px,5vw,30px);line-height:1.95}.reader-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}.reader-tools .btn-quiet{padding:8px 10px}.empty-state{text-align:center;color:var(--muted);margin-top:36px;line-height:1.7;padding:24px 16px;border:1px dashed var(--line);border-radius:12px}
+    .drawer-backdrop{position:fixed;inset:0;background:rgba(5,10,8,.55);z-index:80;opacity:0;pointer-events:none;transition:opacity .22s}.drawer-backdrop.open{opacity:1;pointer-events:auto}.drawer{position:fixed;top:0;bottom:0;left:0;width:min(86vw,360px);z-index:81;background:var(--paper);border-right:1px solid var(--line);padding:22px 18px;overflow:auto;transform:translateX(-102%);transition:transform .25s ease;box-shadow:var(--shadow)}.drawer.open{transform:translateX(0)}.drawer-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:18px}.drawer-head h2{font-family:var(--serif);font-size:30px;color:var(--gold)}.drawer-section{margin:18px 0}.drawer-label{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px}.drawer .control{margin-bottom:9px}.drawer-action{width:100%;text-align:left;margin:5px 0;padding:12px 13px;border-radius:9px;background:transparent;border:1px solid var(--line);color:var(--ink)}.drawer-action:hover{border-color:var(--gold)}.quote-library{display:grid;gap:8px;max-height:55vh;overflow-y:auto;overscroll-behavior:contain;padding:2px}.quote-item{padding:11px 12px;border:1px solid var(--line);border-radius:13px;background:var(--bg)}.quote-item p{font-family:var(--serif);font-size:17px;line-height:1.35;overflow-wrap:anywhere;margin-bottom:9px}.quote-item-actions{display:flex;gap:6px}.quote-item-actions button{font-size:12px;padding:6px 9px;border-radius:9px;border:1px solid var(--line);background:var(--paper)}.admin-caption{font-size:11px;color:var(--muted);overflow-wrap:anywhere;line-height:1.5;margin-bottom:8px}.hidden{display:none!important}
+    @media(max-width:480px){header{padding:12px 14px}.brand-logo{width:clamp(112px,34vw,138px);max-height:78px}.header-actions{gap:6px}.icon-btn{width:40px;height:40px}.btn-add,.btn-quiet{padding:9px 11px;font-size:13px}main{padding:17px 14px 40px}.toolbar{grid-template-columns:1fr}.filter-controls{grid-template-columns:1fr}.poem-card{padding:20px 16px 20px 21px}.modal-content{padding:17px}.collection-row h2{font-size:35px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand"><img class="brand-logo" src="logo-feather.png" alt="Моя Поэзия"></div>
+    <div class="header-actions">
+      <span id="poemCount" class="header-count" title="Количество стихотворений">0</span><button id="themeBtn" class="icon-btn" onclick="toggleTheme()" aria-label="Переключить тему" title="Светлая / тёмная тема">☾</button>
+      <button id="menuBtn" class="icon-btn" onclick="toggleMenu(true)" aria-label="Открыть меню" title="Меню">☰</button>
+      <button id="loginBtn" class="btn-quiet" onclick="login()">Войти</button>
+      <button id="logoutBtn" class="btn-quiet hidden" onclick="logout()">Выйти</button>
+      <button id="addBtn" class="btn-add hidden" onclick="openEditModal()">+ Стих</button>
+    </div>
+  </header>
+  <div id="drawerBackdrop" class="drawer-backdrop" onclick="toggleMenu(false)"></div>
+  <aside id="appDrawer" class="drawer" aria-label="Главное меню" aria-hidden="true">
+    <div class="drawer-head"><h2>Моя Поэзия</h2><button class="icon-btn" onclick="toggleMenu(false)" aria-label="Закрыть меню">×</button></div>
+    <div class="drawer-section"><div class="drawer-label">Библиотека</div>
+      <button class="drawer-action" onclick="toggleMenu(false);openQuoteList()">☷ Список цитат</button>
+      <button class="drawer-action" onclick="toggleMenu(false);toggleFavoritesFilter()">☆ Избранное</button>
+      <button class="drawer-action" onclick="toggleMenu(false);clearFilters()">↺ Сбросить фильтры</button>
+      <label class="drawer-label" for="categoryFilter">Категория</label><select class="control" id="categoryFilter" aria-label="Фильтр по категории" onchange="render()"><option value="">Все категории</option></select>
+      <label class="drawer-label" for="sortSelect">Сортировка</label><select class="control" id="sortSelect" aria-label="Сортировка" onchange="render()"><option value="newest">Сначала новые</option><option value="oldest">Сначала старые</option><option value="title">По названию А–Я</option></select>
+    </div>
+    <section id="adminPanel" class="drawer-section">
+      <div class="drawer-label">Инструменты администратора</div><p class="admin-caption">Режим администратора · <span id="adminUid"></span></p>
+      <button class="drawer-action" onclick="toggleMenu(false);importLocal()">Перенести старые стихи</button>
+      <button class="drawer-action" onclick="toggleMenu(false);exportBackup()">Экспорт / резервная копия</button>
+      <button class="drawer-action" onclick="toggleMenu(false);document.getElementById('backupFile').click()">Восстановить из JSON</button>
+      <input class="hidden" type="file" id="backupFile" accept="application/json,.json" onchange="importBackup(event)">
+    </section>
+    <div class="drawer-section"><div class="drawer-label">Аккаунт и оформление</div>
+      <button class="drawer-action" onclick="toggleMenu(false);toggleTheme()">☼ Переключить светлую / тёмную тему</button>
+      <button id="drawerLoginBtn" class="drawer-action" onclick="toggleMenu(false);login()">Войти через Google</button>
+      <button id="drawerLogoutBtn" class="drawer-action hidden" onclick="toggleMenu(false);logout()">Выйти из аккаунта</button>
+    </div>
+  </aside>
+  <main>
+    <div class="toolbar">
+      <div class="search-bar"><input type="search" id="searchInput" placeholder="Найти стихотворение…" oninput="render()" aria-label="Поиск стихов"></div>
+      <button id="favoritesFilter" class="btn-quiet filter-btn" onclick="toggleFavoritesFilter()">☆ Избранное</button>
+    </div>
+    <section class="quote-shelf" id="quoteShelf" aria-label="Цитаты — прокручивай вверх или вниз" tabindex="0">
+      <div class="quote-track" id="quoteTrack"><article class="quote-slide"><div class="quote-text">Твои мысли заслуживают собственной страницы.</div></article></div>
+      
+    </section>
+    <div id="syncStatus" class="sync-line hidden" role="status" aria-live="polite">Подключение к библиотеке…</div>
+    <div id="poemsGrid"></div>
+  </main>
+
+  <div class="modal" id="editModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-content">
+      <h2 id="modalTitle" style="color:var(--accent-gold);font-family:var(--font-serif)">Новый стих</h2>
+      <input type="hidden" id="poemId">
+      <label for="titleInput">Название</label><input id="titleInput" type="text" maxlength="180" placeholder="Название стихотворения">
+      <label for="categoryInput">Категория</label><input id="categoryInput" type="text" maxlength="60" list="categorySuggestions" placeholder="Например: Любовь, Жизнь, Грусть">
+      <datalist id="categorySuggestions"><option value="Любовь"><option value="Жизнь"><option value="Грусть"><option value="Вдохновение"><option value="Природа"><option value="Дружба"></datalist>
+      <label for="bodyInput">Текст стихотворения</label><textarea id="bodyInput" placeholder="Текст стихотворения…"></textarea>
+      <div class="actions">
+        <button id="deleteBtn" onclick="removePoem()" style="background:transparent;color:#ef4444;border:none;display:none">Удалить</button>
+        <div class="actions-right"><button class="btn-quiet" onclick="closeModal('editModal')">Отмена</button><button class="btn-add" onclick="save()">Сохранить</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="viewModal" role="dialog" aria-modal="true" aria-labelledby="viewTitle">
+    <div class="modal-content" id="readerContent">
+      <h2 id="viewTitle" style="color:var(--accent-gold);font-family:var(--font-serif)"></h2>
+      <div id="viewDate" class="view-meta"></div>
+      <div id="viewCategory" class="category-pill hidden"></div>
+      <div id="viewBody" class="view-text"></div>
+      <div class="reader-tools">
+        <button id="viewFavoriteBtn" class="btn-quiet" onclick="toggleCurrentFavorite()">☆ В избранное</button>
+        <button id="readerModeBtn" class="btn-quiet" onclick="toggleReaderMode()">✧ Режим чтения</button>
+        <button class="btn-quiet" onclick="changeReaderSize(-1)" aria-label="Уменьшить текст">A−</button>
+        <button class="btn-quiet" onclick="changeReaderSize(1)" aria-label="Увеличить текст">A+</button>
+      </div>
+      <div class="actions">
+        <button class="btn-quiet" onclick="closeModal('viewModal')">Закрыть</button>
+        <button id="editCurrentBtn" onclick="editCurrent()" class="btn-add hidden">Изменить</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="quoteListModal" role="dialog" aria-modal="true" aria-labelledby="quoteListTitle">
+    <div class="modal-content">
+      <div class="card-top"><h2 id="quoteListTitle" style="font-family:var(--serif);font-size:30px;color:var(--gold)">Список цитат</h2><button class="icon-btn" onclick="closeModal('quoteListModal')" aria-label="Закрыть список">×</button></div>
+      <p class="admin-caption" style="margin:8px 0 14px">Все сохранённые цитаты. Здесь их можно редактировать или удалять.</p>
+      <div id="quoteLibrary" class="quote-library"></div>
+      <div class="actions"><button class="btn-quiet" onclick="closeModal('quoteListModal')">Закрыть</button><button class="btn-add" onclick="openQuoteEditor();">+ Новая цитата</button></div>
+    </div>
+  </div>
+
+  <div class="modal" id="quoteModal" role="dialog" aria-modal="true" aria-labelledby="quoteModalTitle">
+    <div class="modal-content"><h2 id="quoteModalTitle" style="font-family:var(--serif);font-size:30px;color:var(--gold)">Новая цитата</h2>
+      <input type="hidden" id="quoteId"><label for="quoteInput">Твоя цитата</label><textarea id="quoteInput" maxlength="1200" placeholder="Запиши мысль, к которой захочется вернуться…" style="height:160px"></textarea>
+      <div class="actions"><button id="deleteQuoteBtn" class="btn-quiet" style="color:#b94b43;display:none" onclick="deleteQuote()">Удалить</button><div class="actions-right"><button class="btn-quiet" onclick="closeModal('quoteModal')">Отмена</button><button class="btn-add" onclick="saveQuote()">Сохранить</button></div></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js';
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js';
+    import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, getDocs, writeBatch } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: 'AIzaSyBjcUXcG0MfND7G14UoGVYH8G1xuaeZoPg',
+      authDomain: 'marufs-poetry.firebaseapp.com',
+      projectId: 'marufs-poetry',
+      storageBucket: 'marufs-poetry.firebasestorage.app',
+      messagingSenderId: '213962256080',
+      appId: '1:213962256080:web:39afdd3835e6d6201238d5',
+      measurementId: 'G-JLQ7NYL03C'
+    };
+    const ADMIN_UID = 'GgKTFgrTyKUUtxZwL8QEy4BlCRs1';
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const poemsRef = collection(db, 'poems');
+    const $ = id => document.getElementById(id);
+    const escapeHtml = value => String(value ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    let poems = [], favorites = new Set(), currentActiveId = null, admin = false, currentUser = null;
+    let favoritesUnsubscribe = null, poemsUnsubscribe = null, quotesUnsubscribe = null, quoteFavoritesUnsubscribe = null, favoritesOnly = false, readerFontSize = 21;
+    let quotes = [], quoteIndex = 0, quoteTimer = null, quoteTouchX = null, quoteFavorites = new Set();
+    const status = message => { $('syncStatus').textContent = message; };
+    const favoriteRef = (uid, poemId) => doc(db, 'users', uid, 'favorites', poemId);
+    const quoteCollection = uid => collection(db, 'users', uid, 'quotes');
+
+    const THEME_KEY = 'moja-poeziya-theme';
+    function applyTheme(theme) { document.documentElement.dataset.theme = theme; $('themeBtn').textContent = theme === 'dark' ? '☼' : '☾'; $('themeBtn').setAttribute('aria-label', theme === 'dark' ? 'Включить молочно-белую тему' : 'Включить тёмно-синюю тему'); const meta=document.querySelector('meta[name="theme-color"]'); if(meta) meta.content=theme==='dark'?'#050f1f':'#f5f2eb'; }
+    window.toggleTheme = function() { const next=document.documentElement.dataset.theme==='dark'?'light':'dark'; localStorage.setItem(THEME_KEY,next); applyTheme(next); };
+    window.toggleMenu = function(open) { const drawer=$('appDrawer'), backdrop=$('drawerBackdrop'); drawer.classList.toggle('open',open); backdrop.classList.toggle('open',open); drawer.setAttribute('aria-hidden',String(!open)); document.body.style.overflow=open?'hidden':''; };
+    applyTheme(localStorage.getItem(THEME_KEY)==='light'?'light':'dark');
+    window.openQuoteList = function(){
+      if(!currentUser){alert('Войди через Google, чтобы просматривать и изменять свои цитаты.');return;}
+      renderQuoteLibrary(); $('quoteListModal').classList.add('active');
+    };
+    function renderQuoteLibrary(){
+      const host=$('quoteLibrary'); if(!host) return;
+      if(!currentUser){host.innerHTML='<p class="admin-caption">Войди через Google, чтобы управлять цитатами.</p>';return;}
+      if(!quotes.length){host.innerHTML='<p class="empty-state">Цитат пока нет. Нажми «Новая цитата», чтобы добавить первую.</p>';return;}
+      host.innerHTML=quotes.map((q,i)=>`<div class="quote-item"><p>${escapeHtml(q.text)}</p><div class="quote-item-actions"><button onclick="openQuoteEditor('${escapeHtml(q.id)}')">✎ Изменить</button><button onclick="deleteQuoteById('${escapeHtml(q.id)}')">⌫ Удалить</button><button onclick="showQuote('${escapeHtml(q.id)}')">Показать</button><button onclick="toggleQuoteFavoriteById('${escapeHtml(q.id)}')">${quoteFavorites.has(q.id)?'★ В избранном':'☆ В избранное'}</button></div></div>`).join('');
+    }
+    window.showQuote=id=>{const i=quotes.findIndex(q=>q.id===id);if(i>=0){quoteIndex=i;renderQuote();closeModal('quoteListModal');toggleMenu(false);$('quoteShelf').scrollIntoView({behavior:'smooth',block:'center'});}}
+    window.deleteQuoteById=async id=>{if(!currentUser||!id||!confirm('Удалить эту цитату?'))return;try{await deleteDoc(doc(db,'users',currentUser.uid,'quotes',id));}catch(e){alert('Не удалось удалить цитату: '+e.message);}};
+    function fitQuoteShelf(index=quoteIndex){
+      const shelf=$('quoteShelf'), track=$('quoteTrack'); if(!shelf||!track||!track.children.length)return;
+      const slide=track.children[Math.max(0,Math.min(index,track.children.length-1))];
+      if(!slide)return;
+      const max=Math.max(150,Math.floor(window.innerHeight*.42));
+      shelf.style.height=Math.min(slide.scrollHeight,max)+'px';
+    }
+    let quoteProgrammaticScroll=false;
+    // Render three copies of the quote list. The middle copy is the normal viewing
+    // area; when the user reaches either edge, jump to the matching quote in the
+    // middle copy. This creates a continuous downward loop without visibly reversing.
+    function scrollQuoteTo(index,smooth=true){
+      const shelf=$('quoteShelf'),track=$('quoteTrack');
+      if(!shelf||!track||!track.children.length)return;
+      const count=quotes.length;
+      const visualIndex=count ? count + ((index % count) + count) % count : 0;
+      const slide=track.children[visualIndex];
+      if(!slide)return;
+      fitQuoteShelf(visualIndex);
+      quoteProgrammaticScroll=true;
+      shelf.scrollTo({top:slide.offsetTop,behavior:smooth?'smooth':'auto'});
+      if(quoteProgrammaticReset)clearTimeout(quoteProgrammaticReset);
+      quoteProgrammaticReset=setTimeout(()=>{quoteProgrammaticScroll=false;},700);
+    }
+    let quoteProgrammaticReset=null;
+    function renderQuote(){
+      const track=$('quoteTrack'), shelf=$('quoteShelf'); if(!track||!shelf)return;
+      if(!quotes.length){
+        const message=currentUser?'Добавь первую цитату в свой личный блокнот.':'Войди через Google, чтобы добавлять и сохранять цитаты в облаке.';
+        track.innerHTML=`<article class="quote-slide"><div class="quote-text">${escapeHtml(message)}</div></article>`;
+        quoteIndex=0;
+      } else {
+        quoteIndex=((quoteIndex%quotes.length)+quotes.length)%quotes.length;
+        const sequence=[...quotes,...quotes,...quotes];
+        track.innerHTML=sequence.map((q,i)=>`<article class="quote-slide" data-quote-index="${i%quotes.length}" data-visual-index="${i}"><div class="quote-text">“${escapeHtml(q.text)}”</div>${q.author?`<div class="quote-attribution">${escapeHtml(q.author)}</div>`:''}</article>`).join('');
+      }
+      requestAnimationFrame(()=>{fitQuoteShelf(quotes.length ? quotes.length+quoteIndex : 0);scrollQuoteTo(quoteIndex,false);});
+      renderQuoteLibrary(); startQuoteTimer();
+    }
+    window.changeQuote=(delta,automatic=false)=>{
+      if(!quotes.length)return;
+      quoteIndex=(quoteIndex+delta+quotes.length)%quotes.length;
+      scrollQuoteTo(quoteIndex,true);
+      if(!automatic)startQuoteTimer();
+    };
+    const shelf=$('quoteShelf');
+    let quoteScrollDebounce=null;
+    shelf.addEventListener('scroll',()=>{
+      if(!quotes.length)return;
+      const slides=[...$('quoteTrack').children];let nearest=0,best=Infinity;
+      slides.forEach((el,i)=>{const d=Math.abs(el.offsetTop-shelf.scrollTop);if(d<best){best=d;nearest=i;}});
+      const count=quotes.length;
+      // Near a duplicated edge, reposition to the same quote in the center copy.
+      const logical=nearest%count;
+      quoteIndex=logical;
+      fitQuoteShelf(nearest);
+      if(nearest<count || nearest>=count*2){
+        if(!quoteProgrammaticScroll) requestAnimationFrame(()=>scrollQuoteTo(logical,false));
+      }
+      if(quoteScrollDebounce)clearTimeout(quoteScrollDebounce);
+      if(!quoteProgrammaticScroll)quoteScrollDebounce=setTimeout(()=>startQuoteTimer(),500);
+    },{passive:true});
+    shelf.addEventListener('touchstart',()=>{quoteProgrammaticScroll=false;},{passive:true});
+    shelf.addEventListener('wheel',()=>{quoteProgrammaticScroll=false;},{passive:true});
+    shelf.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){e.preventDefault();changeQuote(1);}if(e.key==='ArrowUp'){e.preventDefault();changeQuote(-1);}});
+    window.addEventListener('resize',()=>fitQuoteShelf(quotes.length ? quotes.length+quoteIndex : 0));
+    function startQuoteTimer(){if(quoteTimer)clearInterval(quoteTimer);quoteTimer=null;if(quotes.length<2)return;quoteTimer=setInterval(()=>{if(document.hidden||!quotes.length)return;window.changeQuote(1,true);},6500);}
+
+    window.openQuoteEditor=(id=null)=>{if(!currentUser)return alert('Войди через Google, чтобы сохранять цитаты в облаке.');const q=id?quotes.find(x=>x.id===id):null;$('quoteId').value=q?.id||'';$('quoteInput').value=q?.text||'';$('quoteModalTitle').textContent=q?'Редактировать цитату':'Новая цитата';$('deleteQuoteBtn').style.display=q?'inline-flex':'none';$('quoteModal').classList.add('active');};
+    window.saveQuote=async()=>{if(!currentUser)return alert('Войди через Google.');const text=$('quoteInput').value.trim();if(!text)return alert('Напиши текст цитаты.');const id=$('quoteId').value||crypto.randomUUID();try{await setDoc(doc(db,'users',currentUser.uid,'quotes',id),{text:text.slice(0,1200),updatedAt:Date.now(),createdAt:quotes.find(q=>q.id===id)?.createdAt||Date.now()});closeModal('quoteModal');}catch(e){alert('Не удалось сохранить цитату: '+e.message+'. Проверь правила Firestore.');}};
+    window.deleteQuote=async()=>{const id=$('quoteId').value;if(!currentUser||!id||!confirm('Удалить эту цитату?'))return;try{await deleteDoc(doc(db,'users',currentUser.uid,'quotes',id));closeModal('quoteModal');}catch(e){alert('Не удалось удалить цитату: '+e.message);}};
+    window.toggleQuoteFavoriteById=async id=>{if(!currentUser||!id)return;const ref=doc(db,'users',currentUser.uid,'quoteFavorites',id);try{if(quoteFavorites.has(id))await deleteDoc(ref);else await setDoc(ref,{quoteId:id,createdAt:Date.now()});}catch(e){alert('Не удалось обновить избранное цитат: '+e.message);}};
+    renderQuote();
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'){toggleMenu(false);closeModal('editModal');closeModal('viewModal');closeModal('quoteListModal');closeModal('quoteModal');}});
+
+    function categoryOf(p) { return String(p.category || '').trim(); }
+    function refreshCategoryFilter() {
+      const select = $('categoryFilter'), previous = select.value;
+      const categories = [...new Set(poems.map(categoryOf).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'ru'));
+      select.innerHTML = '<option value="">Все категории</option>' + categories.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+      if (categories.includes(previous)) select.value = previous;
+    }
+    function normalizeSearch(value) { return String(value ?? '').toLocaleLowerCase().replace(/[ıİ]/g,'i').replace(/[ý]/g,'y').replace(/[ş]/g,'s').replace(/[ç]/g,'c').replace(/[ä]/g,'a').replace(/[ö]/g,'o').replace(/[ü]/g,'u').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim(); }
+    function render() {
+      $('poemCount').textContent = poems.length.toLocaleString('ru-RU');
+      const query = normalizeSearch($('searchInput').value);
+      const terms = query.split(/\s+/).filter(Boolean);
+      const category = $('categoryFilter').value;
+      const sort = $('sortSelect').value;
+      let filtered = poems.filter(p => {
+        // Search each field and allow words in any order (e.g. title + a line of the poem).
+        const fields = [p.title, p.body, p.category].map(x => normalizeSearch(String(x || '')));
+        const haystack = fields.join('\n');
+        return terms.every(term => haystack.includes(term)) &&
+          (!category || categoryOf(p) === category) &&
+          (!favoritesOnly || favorites.has(p.id));
+      });
+      filtered.sort((a,b) => sort === 'title' ? String(a.title||'').localeCompare(String(b.title||''),'ru') : sort === 'oldest' ? (a.updatedAt||0)-(b.updatedAt||0) : (b.updatedAt||0)-(a.updatedAt||0));
+      $('poemsGrid').innerHTML = filtered.length ? filtered.map(p => `
+        <article class="poem-card" data-poem-id="${escapeHtml(p.id)}" tabindex="0" role="button" aria-label="Открыть стих ${escapeHtml(p.title||'Без названия')}">
+          <div class="card-top"><div><h3>${escapeHtml(p.title||'Без названия')}</h3><div class="date">${escapeHtml(p.date||'')}</div></div>
+            <button class="star-btn ${favorites.has(p.id)?'active':''}" data-favorite-id="${escapeHtml(p.id)}" aria-label="${favorites.has(p.id)?'Убрать из избранного':'Добавить в избранное'}" title="Избранное">${favorites.has(p.id)?'★':'☆'}</button>
+          </div>
+          <div class="preview">${escapeHtml(p.body||'')}</div>
+          ${categoryOf(p)?`<span class="category-pill">${escapeHtml(categoryOf(p))}</span>`:''}
+        </article>`).join('') : '<div class="empty-state">Стихи не найдены.<br>Попробуй изменить запрос или сбросить фильтры.</div>';
+    }
+    $('poemsGrid').addEventListener('click', event => {
+      const favoriteButton = event.target.closest('[data-favorite-id]');
+      if (favoriteButton) { event.stopPropagation(); toggleFavorite(favoriteButton.dataset.favoriteId); return; }
+      const card = event.target.closest('[data-poem-id]'); if (card) viewPoem(card.dataset.poemId);
+    });
+    $('poemsGrid').addEventListener('keydown', event => { if ((event.key==='Enter'||event.key===' ') && event.target.matches('[data-poem-id]')) { event.preventDefault(); viewPoem(event.target.dataset.poemId); } });
+
+    window.openEditModal = function(id=null) {
+      if (!admin) return;
+      const p = id ? poems.find(x=>x.id===id) : null; currentActiveId = id;
+      $('poemId').value = p?.id || ''; $('titleInput').value = p?.title || ''; $('categoryInput').value = p?.category || ''; $('bodyInput').value = p?.body || '';
+      $('modalTitle').textContent = p ? 'Редактировать стих' : 'Новый стих'; $('deleteBtn').style.display = p ? 'block' : 'none';
+      closeModal('viewModal'); $('editModal').classList.add('active');
+    };
+    function viewPoem(id) {
+      const p = poems.find(x=>x.id===id); if (!p) return; currentActiveId=id;
+      $('viewTitle').textContent=p.title||'Без названия'; $('viewDate').textContent=p.date||''; $('viewBody').textContent=p.body||'';
+      $('viewCategory').textContent=categoryOf(p); $('viewCategory').classList.toggle('hidden',!categoryOf(p));
+      $('editCurrentBtn').classList.toggle('hidden',!admin); updateCurrentFavoriteButton(); $('viewModal').classList.add('active');
+    }
+    window.editCurrent = () => { if(admin && currentActiveId) openEditModal(currentActiveId); };
+    window.closeModal = id => { $(id).classList.remove('active'); document.body.classList.remove('reader-mode'); };
+    window.save = async function() {
+      if (!admin) return;
+      const id=$('poemId').value || crypto.randomUUID(), title=$('titleInput').value.trim()||'Без названия', body=$('bodyInput').value.trim(), category=$('categoryInput').value.trim();
+      if (!body) return alert('Введите текст стихотворения.');
+      const previous=poems.find(p=>p.id===id);
+      try { await setDoc(doc(db,'poems',id),{title,body,category,date:previous?.date||new Date().toLocaleDateString('ru-RU'),updatedAt:Date.now()}); closeModal('editModal'); }
+      catch(e) { alert('Не удалось сохранить стих: '+e.message); }
+    };
+    window.removePoem = async function() {
+      if(!admin||!currentActiveId||!confirm('Удалить этот стих?')) return;
+      try { await deleteDoc(doc(db,'poems',currentActiveId)); closeModal('editModal'); }
+      catch(e) { alert('Не удалось удалить стих: '+e.message); }
+    };
+    window.toggleFavorite = async function(id) {
+      if(!currentUser) { alert('Войди через Google, чтобы синхронизировать избранное между устройствами.'); return; }
+      const ref=favoriteRef(currentUser.uid,id);
+      try { if(favorites.has(id)) await deleteDoc(ref); else await setDoc(ref,{poemId:id,createdAt:Date.now()}); }
+      catch(e) { alert('Не удалось обновить избранное: '+e.message+'. Проверь правила Firestore.'); }
+    };
+    window.toggleCurrentFavorite = () => { if(currentActiveId) toggleFavorite(currentActiveId); };
+    function updateCurrentFavoriteButton() { const active=favorites.has(currentActiveId); $('viewFavoriteBtn').textContent=active?'★ В избранном':'☆ В избранное'; $('viewFavoriteBtn').classList.toggle('filter-btn',active); }
+    window.toggleFavoritesFilter = function() { favoritesOnly=!favoritesOnly; $('favoritesFilter').classList.toggle('active',favoritesOnly); $('favoritesFilter').textContent=favoritesOnly?'★ Только избранное':'☆ Избранное'; render(); };
+    window.clearFilters = function() { $('searchInput').value=''; $('categoryFilter').value=''; $('sortSelect').value='newest'; favoritesOnly=false; $('favoritesFilter').classList.remove('active'); $('favoritesFilter').textContent='☆ Избранное'; render(); };
+    window.toggleReaderMode = function() { document.body.classList.toggle('reader-mode'); $('readerModeBtn').textContent=document.body.classList.contains('reader-mode')?'✧ Обычный режим':'✧ Режим чтения'; };
+    window.changeReaderSize = function(delta) { readerFontSize=Math.max(16,Math.min(34,readerFontSize+delta*2)); $('viewBody').style.fontSize=readerFontSize+'px'; };
+
+    window.exportBackup = async function() {
+      if(!admin) return alert('Экспорт доступен только администратору.');
+      try {
+        const backup={format:'moja-poeziya-backup',version:1,exportedAt:new Date().toISOString(),projectId:firebaseConfig.projectId,poems:poems.map(({id,title,body,date,category,updatedAt})=>({id,title,body,date,category:category||'',updatedAt:updatedAt||0}))};
+        const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}), url=URL.createObjectURL(blob), a=document.createElement('a');
+        a.href=url; a.download='moja-poeziya-backup-'+new Date().toISOString().slice(0,10)+'.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+        alert('Резервная копия подготовлена. Сохрани файл в надёжном месте.');
+      } catch(e) { alert('Не удалось создать резервную копию: '+e.message); }
+    };
+    window.importBackup = async function(event) {
+      const file=event.target.files?.[0]; event.target.value=''; if(!file) return;
+      if(!admin) return alert('Восстановление доступно только администратору.');
+      if(file.size>10*1024*1024) return alert('Файл слишком большой (максимум 10 МБ).');
+      let data; try { data=JSON.parse(await file.text()); } catch { return alert('Файл не является корректным JSON.'); }
+      if(data?.format!=='moja-poeziya-backup'||!Array.isArray(data.poems)) return alert('Неподходящий файл резервной копии. Выбери JSON, созданный этим приложением.');
+      const valid=data.poems.filter(p=>p&&typeof p.id==='string'&&p.id.length>0&&typeof p.body==='string').slice(0,400);
+      if(!valid.length) return alert('В резервной копии нет корректных стихов.');
+      if(!confirm(`Восстановить ${valid.length} стихов? Документы с совпадающими ID будут перезаписаны; остальные не удалятся.`)) return;
+      try {
+        for(let i=0;i<valid.length;i+=400) {
+          const batch=writeBatch(db);
+          for(const p of valid.slice(i,i+400)) batch.set(doc(db,'poems',p.id),{title:String(p.title||'Без названия').slice(0,180),body:p.body,category:String(p.category||'').slice(0,60),date:String(p.date||''),updatedAt:Number(p.updatedAt)||Date.now()});
+          await batch.commit();
+        }
+        alert(`Восстановлено стихов: ${valid.length}. Существующие документы с теми же ID обновлены.`);
+      } catch(e) { alert('Ошибка восстановления: '+e.message); }
+    };
+    window.importLocal = async function() {
+      if(!admin) return;
+      let local; try { local=JSON.parse(localStorage.getItem('my_poems')||'[]'); } catch { return alert('Ошибка чтения локальных стихов.'); }
+      if(!Array.isArray(local)||!local.length) return alert('На этом устройстве нет локальных стихов.');
+      if(!confirm(`Перенести ${local.length} локальных стихов в облако? Локальные данные останутся на устройстве.`)) return;
+      let count=0;
+      for(const p of local) { if(!p||typeof p.body!=='string') continue; const id='legacy-'+String(p.id??crypto.randomUUID()).replace(/[^a-zA-Z0-9_-]/g,'_');
+        try { await setDoc(doc(db,'poems',id),{title:String(p.title||'Без названия'),body:p.body,category:String(p.category||''),date:String(p.date||''),updatedAt:Date.now()}); count++; }
+        catch(e) { alert(`Перенесено ${count}. Ошибка: ${e.message}`); return; }
+      }
+      alert(`Перенесено стихов: ${count}. Локальные копии сохранены.`);
+    };
+    window.login = async function() { const provider=new GoogleAuthProvider(); try { await signInWithPopup(auth,provider); } catch(e) { if(['auth/popup-blocked','auth/operation-not-supported-in-this-environment'].includes(e.code)) { try { await signInWithRedirect(auth,provider); } catch(err) { alert('Ошибка входа: '+err.message); } } else alert('Ошибка входа: '+e.message); } };
+    window.logout = () => signOut(auth);
+    getRedirectResult(auth).catch(e=>console.warn('Google redirect:',e));
+
+    onAuthStateChanged(auth,user=>{
+      currentUser=user; admin=!!user&&user.uid===ADMIN_UID;
+      $('loginBtn').classList.toggle('hidden',!!user); $('logoutBtn').classList.toggle('hidden',!user); $('drawerLoginBtn').classList.toggle('hidden',!!user); $('drawerLogoutBtn').classList.toggle('hidden',!user); $('addBtn').classList.toggle('hidden',!admin); $('adminPanel').style.display=admin?'block':'none'; $('adminUid').textContent=admin?user.uid:'';
+      if(favoritesUnsubscribe) { favoritesUnsubscribe(); favoritesUnsubscribe=null; }
+      if(quotesUnsubscribe) { quotesUnsubscribe(); quotesUnsubscribe=null; }
+      if(quoteFavoritesUnsubscribe) { quoteFavoritesUnsubscribe(); quoteFavoritesUnsubscribe=null; }
+      favorites=new Set(); quotes=[]; quoteIndex=0; quoteFavorites=new Set(); render(); renderQuote(); renderQuoteLibrary();
+      if(user) {
+        favoritesUnsubscribe=onSnapshot(collection(db,'users',user.uid,'favorites'),snap=>{favorites=new Set(snap.docs.map(d=>d.id)); render(); updateCurrentFavoriteButtonIfOpen();},err=>{console.error(err);status('Избранное недоступно: '+err.message);});
+        quoteFavoritesUnsubscribe=onSnapshot(collection(db,'users',user.uid,'quoteFavorites'),snap=>{quoteFavorites=new Set(snap.docs.map(d=>d.id));renderQuote();},err=>console.error('Quote favorites:',err));
+        quotesUnsubscribe=onSnapshot(quoteCollection(user.uid),snap=>{quotes=snap.docs.map(d=>({id:d.id,...d.data()})).filter(q=>typeof q.text==='string').sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));renderQuoteLibrary();if(quoteIndex>=quotes.length)quoteIndex=Math.max(0,quotes.length-1);renderQuote();},err=>{console.error(err);$('quoteLibrary').innerHTML='<p class="admin-caption">Не удалось загрузить цитаты. Проверь правила Firestore.</p>';});
+        if(!admin) status('Вход выполнен. Чтение доступно; права администратора не назначены этому аккаунту.');
+      } else { status('Вы вошли как гость. Войдите через Google для синхронизации избранного и цитат.'); }
+    });
+    function updateCurrentFavoriteButtonIfOpen(){ if($('viewModal').classList.contains('active')) updateCurrentFavoriteButton(); }
+    poemsUnsubscribe=onSnapshot(poemsRef,snapshot=>{
+      poems=snapshot.docs.map(d=>({id:d.id,...d.data()})); refreshCategoryFilter(); render();
+      status(snapshot.metadata.fromCache?'Офлайн: показана сохранённая копия':'Библиотека синхронизирована с Firebase');
+    },error=>{ console.error(error); status('Ошибка загрузки стихов: '+error.message+'. Проверь Firestore Rules и подключение.'); });
+
+    if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(err=>console.error('Service Worker:',err)));
+  </script>
+</body>
+</html>
