@@ -109,7 +109,7 @@
   <div class="modal" id="quoteListModal" role="dialog" aria-modal="true" aria-labelledby="quoteListTitle">
     <div class="modal-content">
       <div class="card-top"><h2 id="quoteListTitle" style="font-family:var(--serif);font-size:30px;color:var(--gold)">Список цитат</h2><button class="icon-btn" onclick="closeModal('quoteListModal')" aria-label="Закрыть список цитат">×</button></div>
-      <p class="admin-caption" style="margin:8px 0 14px">Все сохранённые цитаты. Здесь их можно редактировать или удалять.</p>
+      <p class="admin-caption" style="margin:8px 0 14px">Все сохранённые цит��ты. Здесь их можно редактировать или удалять.</p>
       <div id="quoteLibrary" class="quote-library"></div>
       <div class="actions"><button class="btn-quiet" onclick="closeModal('quoteListModal')">Закрыть</button><button class="btn-add" onclick="openQuoteEditor()">+ Новая цитата</button></div>
     </div>
@@ -137,6 +137,12 @@
       measurementId: 'G-JLQ7NYL03C'
     };
     const ADMIN_UID = 'GgKTFgrTyKUUtxZwL8QEy4BlCRs1';
+    const DEFAULT_QUOTES = [
+      { id: 'public-1', text: 'Твои мысли заслуживают собственной страницы.', author: 'Моя Поэзия' },
+      { id: 'public-2', text: 'Пауза — это место, где рождается следующий стих.', author: 'Моя Поэзия' },
+      { id: 'public-3', text: 'Каждый день — ещё одна строка в твоей истории.', author: 'Моя Поэзия' },
+      { id: 'public-4', text: 'Слова не исчезают — они просто ждут своего читателя.', author: 'Моя Поэзия' }
+    ];
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
@@ -145,7 +151,7 @@
     const escapeHtml = value => String(value ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
     let poems = [], favorites = new Set(), currentActiveId = null, admin = false, currentUser = null;
     let favoritesUnsubscribe = null, poemsUnsubscribe = null, quotesUnsubscribe = null, quoteFavoritesUnsubscribe = null, favoritesOnly = false, readerFontSize = 21;
-    let quotes = [], quoteIndex = 0, quoteTimer = null, quoteTouchX = null, quoteFavorites = new Set();
+    let quotes = DEFAULT_QUOTES.map(q => ({ ...q })), quoteIndex = 0, quoteTimer = null, quoteTouchX = null, quoteFavorites = new Set();
     let renderQueued = false;
     let searchDebounce = null;
     const poemGrid = $('poemsGrid');
@@ -160,12 +166,19 @@
     window.toggleMenu = function(open) { const drawer=$('appDrawer'), backdrop=$('drawerBackdrop'); drawer.classList.toggle('open',open); backdrop.classList.toggle('open',open); drawer.setAttribute('aria-hidden', String(!open)); };
     applyTheme(localStorage.getItem(THEME_KEY)==='light'?'light':'dark');
     window.openQuoteList = function(){
-      if(!currentUser){alert('Войди через Google, чтобы просматривать и изменять свои цитаты.');return;}
-      renderQuoteLibrary(); $('quoteListModal').classList.add('active');
+      renderQuoteLibrary();
+      $('quoteListModal').classList.add('active');
     };
     function renderQuoteLibrary(){
       const host=$('quoteLibrary'); if(!host) return;
-      if(!currentUser){host.innerHTML='<p class="admin-caption">Войди через Google, чтобы управлять цитатами.</p>';return;}
+      const visibleQuotes = quotes.length ? quotes : DEFAULT_QUOTES;
+      if(!currentUser){
+        host.innerHTML = `
+          <p class="admin-caption" style="margin:0 0 10px">Публичные цитаты</p>
+          ${visibleQuotes.map(q=>`<div class="quote-item"><p>${escapeHtml(q.text)}</p><div class="quote-item-actions"><span class="quote-micro">${escapeHtml(q.author || 'Моя Поэзия')}</span></div></div>`).join('')}
+        `;
+        return;
+      }
       if(!quotes.length){host.innerHTML='<p class="empty-state">Цитат пока нет. Нажми «Новая цитата», чтобы добавить первую.</p>';return;}
       host.innerHTML=quotes.map((q,i)=>`<div class="quote-item"><p>${escapeHtml(q.text)}</p><div class="quote-item-actions"><button onclick="openQuoteEditor('${escapeHtml(q.id)}')">✎ Изменить</button><button onclick="deleteQuoteById('${escapeHtml(q.id)}')">Удалить</button></div></div>`).join('');
     }
@@ -202,17 +215,18 @@
     let quoteProgrammaticReset=null;
     function renderQuote(){
       const track=$('quoteTrack'), shelf=$('quoteShelf'); if(!track||!shelf)return;
-      if(!quotes.length){
+      const quoteSource = quotes.length ? quotes : DEFAULT_QUOTES;
+      if(!quoteSource.length){
         const message=currentUser?'Добавь первую цитату в свой личный блокнот.':'Войди через Google, чтобы добавлять и сохранять цитаты.';
         track.innerHTML=`<article class="quote-slide"><div class="quote-text">${escapeHtml(message)}</div></article>`;
         quoteIndex=0;
         return;
       }
       quoteIndex = normalizeQuoteIndex(quoteIndex);
-      const sequence=[...quotes,...quotes,...quotes];
-      track.innerHTML=sequence.map((q,i)=>`<article class="quote-slide" data-quote-index="${i%quotes.length}" data-visual-index="${i}"><div class="quote-text">“${escapeHtml(q.text)}”</div><div class="quote-meta"><span class="quote-micro">${escapeHtml(q.author || 'Личное')}</span></div></article>`).join('');
+      const sequence=[...quoteSource,...quoteSource,...quoteSource];
+      track.innerHTML=sequence.map((q,i)=>`<article class="quote-slide" data-quote-index="${i%quoteSource.length}" data-visual-index="${i}"><div class="quote-text">“${escapeHtml(q.text)}”</div><div class="quote-meta"><span class="quote-micro">${escapeHtml(q.author || 'Личное')}</span></div></article>`).join('');
       requestAnimationFrame(()=>{
-        const count=quotes.length;
+        const count=quoteSource.length;
         const visualIndex = count + quoteIndex;
         fitQuoteShelf(visualIndex);
         const targetSlide = track.children[visualIndex];
@@ -221,7 +235,8 @@
       renderQuoteLibrary(); startQuoteTimer();
     }
     window.changeQuote=(delta,automatic=false)=>{
-      if(!quotes.length)return;
+      if(!quotes.length && !DEFAULT_QUOTES.length)return;
+      const activeQuotes = quotes.length ? quotes : DEFAULT_QUOTES;
       quoteIndex = normalizeQuoteIndex(quoteIndex + delta);
       scrollQuoteTo(quoteIndex,true);
       if(!automatic)startQuoteTimer();
@@ -230,7 +245,8 @@
     let quoteScrollDebounce=null;
     let quoteScrollFrame=null;
     shelf.addEventListener('scroll',()=>{
-      if(!quotes.length)return;
+      const activeQuotes = quotes.length ? quotes : DEFAULT_QUOTES;
+      if(!activeQuotes.length)return;
       if(quoteScrollFrame) return;
       quoteScrollFrame=requestAnimationFrame(()=>{
         quoteScrollFrame=null;
@@ -238,7 +254,7 @@
         if(!slides.length)return;
         let nearest=0,best=Infinity;
         slides.forEach((el,i)=>{const d=Math.abs(el.offsetTop-shelf.scrollTop);if(d<best){best=d;nearest=i;}});
-        const count=quotes.length;
+        const count=activeQuotes.length;
         const logical=nearest % count;
         quoteIndex = logical;
         fitQuoteShelf(nearest);
@@ -256,8 +272,8 @@
     shelf.addEventListener('touchstart',()=>{quoteProgrammaticScroll=false;},{passive:true});
     shelf.addEventListener('wheel',()=>{quoteProgrammaticScroll=false;},{passive:true});
     shelf.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){e.preventDefault();changeQuote(1);}if(e.key==='ArrowUp'){e.preventDefault();changeQuote(-1);}});
-    window.addEventListener('resize',()=>fitQuoteShelf(quotes.length ? quotes.length + quoteIndex : 0));
-    function startQuoteTimer(){if(quoteTimer)clearInterval(quoteTimer);quoteTimer=null;if(quotes.length<2)return;quoteTimer=setInterval(()=>{if(document.hidden||!quotes.length)return;window.changeQuote(1,true);},6000);}
+    window.addEventListener('resize',()=>fitQuoteShelf((quotes.length || DEFAULT_QUOTES.length) ? (quotes.length || DEFAULT_QUOTES.length) + quoteIndex : 0));
+    function startQuoteTimer(){if(quoteTimer)clearInterval(quoteTimer);quoteTimer=null;const activeQuotes = quotes.length ? quotes : DEFAULT_QUOTES;if(activeQuotes.length<2)return;quoteTimer=setInterval(()=>{if(document.hidden||!activeQuotes.length)return;window.changeQuote(1,true);},6000);}
 
     window.openQuoteEditor=(id=null)=>{if(!currentUser)return alert('Войди через Google, чтобы сохранять цитаты в облаке.');const q=id?quotes.find(x=>x.id===id):null; $('quoteId').value=q?.id || ''; $('quoteInput').value=q?.text || ''; $('quoteModalTitle').textContent=q?'Редактировать цитату':'Новая цитата'; $('deleteQuoteBtn').style.display=q?'block':'none'; $('quoteModal').classList.add('active');};
     window.saveQuote=async()=>{if(!currentUser)return alert('Войди через Google.');const text=$('quoteInput').value.trim();if(!text)return alert('Напиши текст цитаты.');const id=$('quoteId').value || crypto.randomUUID();try{await setDoc(doc(db,'users',currentUser.uid,'quotes',id),{text,createdAt:Date.now(),updatedAt:Date.now()});closeModal('quoteModal');}catch(e){alert('Не удалось сохранить цитату: '+e.message);}};
@@ -358,7 +374,7 @@
       catch(e) { alert('Не удалось удалить стих: '+e.message); }
     };
     window.toggleFavorite = async function(id) {
-      if(!currentUser) { alert('Войди через Google, чтобы синхронизировать избранное между устройствами.'); return; }
+      if(!currentUser) { alert('Войди через Google, чтобы синхр��низировать избранное между устройствами.'); return; }
       const ref=favoriteRef(currentUser.uid,id);
       try { if(favorites.has(id)) await deleteDoc(ref); else await setDoc(ref,{poemId:id,createdAt:Date.now()}); }
       catch(e) { alert('Не удалось обновить избранное: '+e.message+'. Проверь правила Firestore.'); }
@@ -420,13 +436,21 @@
       if(favoritesUnsubscribe) { favoritesUnsubscribe(); favoritesUnsubscribe=null; }
       if(quotesUnsubscribe) { quotesUnsubscribe(); quotesUnsubscribe=null; }
       if(quoteFavoritesUnsubscribe) { quoteFavoritesUnsubscribe(); quoteFavoritesUnsubscribe=null; }
-      favorites=new Set(); quotes=[]; quoteIndex=0; quoteFavorites=new Set(); scheduleRender(); renderQuote(); renderQuoteLibrary();
+      favorites=new Set(); quoteFavorites=new Set();
       if(user) {
+        quotes=[]; quoteIndex=0;
         favoritesUnsubscribe=onSnapshot(collection(db,'users',user.uid,'favorites'),snap=>{favorites=new Set(snap.docs.map(d=>d.id)); scheduleRender(); updateCurrentFavoriteButtonIfOpen();},err=>{console.error(err);});
         quoteFavoritesUnsubscribe=onSnapshot(collection(db,'users',user.uid,'quoteFavorites'),snap=>{quoteFavorites=new Set(snap.docs.map(d=>d.id));renderQuote();},err=>console.error('Quote favorite snapshot error:',err));
         quotesUnsubscribe=onSnapshot(quoteCollection(user.uid),snap=>{quotes=snap.docs.map(d=>({id:d.id,...d.data()})).filter(q=>typeof q.text==='string').sort((a,b)=>(a.createdAt||0)-(b.createdAt||0)); renderQuote();},err=>console.error('Quotes snapshot error:',err));
-        if(!admin) status('Вход выполнен. Чтение доступно; права администратора не назначены этому аккаунту.');
-      } else { status('Вы вошли как гость. Войдите через Google для синхронизации избранного и цитат.'); }
+        status('Вход выполнен. Чтение доступно; права администратора не назначены этому аккаунту.');
+      } else {
+        quotes=DEFAULT_QUOTES.map(q => ({ ...q }));
+        quoteIndex=0;
+        status('Гостевой режим. Цитаты доступны всем зрителям.');
+      }
+      renderQuote();
+      renderQuoteLibrary();
+      scheduleRender();
     });
     function updateCurrentFavoriteButtonIfOpen(){ if($('viewModal').classList.contains('active')) updateCurrentFavoriteButton(); }
     poemsUnsubscribe=onSnapshot(poemsRef,snapshot=>{
