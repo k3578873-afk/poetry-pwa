@@ -20,7 +20,7 @@
     .btn-quiet,.btn-add{border-radius:12px;padding:10px 14px;border:1px solid var(--line);background:var(--paper);color:var(--ink);transition:transform .2s ease,border-color .2s ease,background .2s ease}.btn-add{background:linear-gradient(180deg,var(--paper-deep),var(--paper));border-color:var(--gold);color:var(--gold-soft)}.btn-quiet:hover,.btn-add:hover{transform:translateY(-1px)}
     main{max-width:760px;margin:0 auto;padding:16px 20px 56px}.collection-head{padding:18px 0 22px;border-bottom:1px solid var(--line);margin-bottom:20px}.eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}.headline{font-size:clamp(28px,5vw,40px);line-height:1.05}.toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:12px}.search-bar{position:relative}.search-bar input,.control,.modal-content input,.modal-content textarea,.modal-content select{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);outline:none}.search-bar input:focus,.control:focus,.modal-content input:focus,.modal-content textarea:focus,.modal-content select:focus{border-color:var(--gold)}
     .filter-btn.active{border-color:var(--gold);color:var(--gold)}
-    .quote-shelf{position:relative;overflow:hidden;border:1px solid var(--line);background:var(--paper);border-radius:18px;padding:14px 16px;margin-bottom:18px;scroll-behavior:smooth}.quote-track{position:relative}.quote-slide{display:flex;align-items:center;justify-content:center;min-height:88px;padding:10px 6px}.quote-text{font-family:var(--serif);font-size:clamp(1.15rem,2.8vw,1.45rem);font-style:italic;line-height:1.5;color:var(--gold);text-align:center;max-width:100%;word-break:break-word}.quote-meta{display:flex;justify-content:center}.quote-micro{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);opacity:.8}
+    .quote-shelf{position:relative;overflow:hidden;border:1px solid var(--line);background:var(--paper);border-radius:18px;padding:14px 16px;margin-bottom:18px;scroll-behavior:smooth}.quote-track{position:relative}.quote-slide{display:flex;align-items:center;justify-content:center;min-height:88px;padding:10px 6px;transition:opacity .25s ease}.quote-text{font-family:var(--serif);font-size:clamp(1.15rem,2.8vw,1.45rem);font-style:italic;line-height:1.5;color:var(--gold);text-align:center;max-width:100%;word-break:break-word}.quote-meta{display:flex;justify-content:center}.quote-micro{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);opacity:.8}.quote-shelf.is-paused .quote-text{opacity:.92}.quote-shelf.is-paused{cursor:default}
     #poemsGrid{display:grid;gap:16px}.poem-card{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:23px 21px 22px 25px;cursor:pointer;box-shadow:var(--shadow)}.poem-card:focus-visible{outline:2px solid var(--gold);outline-offset:2px}.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}.card-top h3{font-size:clamp(1.3rem,2vw,1.6rem);font-weight:700;line-height:1.2}.date{font-size:12px;color:var(--muted);margin-top:6px}.star-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}.star-btn.active{background:rgba(255,204,102,.08);border-color:var(--gold);color:var(--gold)}.preview{font-size:15px;line-height:1.7;color:var(--ink);max-height:6.8em;overflow:hidden;white-space:pre-wrap;word-break:break-word}.category-pill{display:inline-block;margin-top:14px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);color:var(--gold);font-size:12px;background:rgba(255,255,255,.02)}
     #adminPanel{display:none}.modal{display:none;position:fixed;inset:0;background:rgba(8,13,11,.58);backdrop-filter:blur(5px);z-index:60;align-items:center;justify-content:center;padding:14px}.modal.active{display:flex}.modal-content{width:min(100%,560px);background:var(--paper-deep);border:1px solid var(--line);border-radius:24px;padding:22px 20px 18px;box-shadow:var(--shadow);max-height:90vh;overflow:auto}.modal-content h2{margin-bottom:16px}.modal-content label{display:block;margin:10px 0 8px;color:var(--muted);font-size:14px}.modal-content textarea{min-height:180px;resize:vertical}.actions{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:18px}.actions-right{display:flex;align-items:center;gap:8px;margin-left:auto}.drawer-backdrop{position:fixed;inset:0;background:rgba(5,10,8,.55);z-index:80;opacity:0;pointer-events:none;transition:opacity .22s}.drawer-backdrop.open{opacity:1;pointer-events:auto}.drawer{position:fixed;right:0;top:0;height:100vh;width:min(90vw,360px);background:var(--paper-deep);border-left:1px solid var(--line);transform:translateX(102%);transition:transform .24s ease;z-index:90;padding:18px 16px;overflow:auto}.drawer.open{transform:translateX(0)}.drawer-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.drawer-head h2{font-size:28px}.drawer-section{padding:12px 0;border-bottom:1px solid var(--line);margin-bottom:14px}.drawer-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:8px 0 10px}.drawer-action{display:block;width:100%;text-align:left;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02);color:var(--ink);margin-bottom:10px}.hidden{display:none!important}.sync-line{font-size:12px;color:var(--muted);margin:8px 0 16px}.empty-state{padding:26px 16px;border:1px dashed var(--line);border-radius:18px;text-align:center;color:var(--muted);background:rgba(255,255,255,.02)}.quote-library{display:grid;gap:12px;max-height:50vh;overflow:auto}.quote-item{padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02)}.quote-item p{white-space:pre-wrap;word-break:break-word;line-height:1.5}.quote-item-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}.view-meta{font-size:12px;color:var(--muted);margin-bottom:12px}.view-text{white-space:pre-wrap;word-break:break-word;line-height:1.9;font-size:21px}.reader-tools{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}.reader-mode body{background:#f3efe7;color:#170f0a}.reader-mode .modal-content{background:#f8f5ee;border-color:#d7cdbd}.reader-mode .view-text{color:#1d1209}.reader-mode .btn-quiet,.reader-mode .btn-add,.reader-mode .icon-btn,.reader-mode .drawer-action,.reader-mode .control,.reader-mode .search-bar input{background:#f5efe7;color:#22150d;border-color:#d7cdbd}.reader-mode .brand-logo{filter:brightness(0) saturate(100%) invert(12%) sepia(24%) saturate(1372%) hue-rotate(176deg) brightness(92%) contrast(94%)}
     @media(max-width:480px){header{padding:12px 14px}.brand-logo{width:clamp(112px,34vw,138px);max-height:78px}.header-actions{gap:6px}.icon-btn{width:40px;height:40px}.btn-add,.btn-quiet{padding:9px 12px}.toolbar{grid-template-columns:1fr}.main{padding:14px 14px 48px}.poem-card{padding:18px 16px}.quote-text{font-size:1.05rem}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
@@ -109,7 +109,7 @@
   <div class="modal" id="quoteListModal" role="dialog" aria-modal="true" aria-labelledby="quoteListTitle">
     <div class="modal-content">
       <div class="card-top"><h2 id="quoteListTitle" style="font-family:var(--serif);font-size:30px;color:var(--gold)">Список цитат</h2><button class="icon-btn" onclick="closeModal('quoteListModal')" aria-label="Закрыть список цитат">×</button></div>
-      <p class="admin-caption" style="margin:8px 0 14px">Все сохранённые цит��ты. Здесь их можно редактировать или удалять.</p>
+      <p class="admin-caption" style="margin:8px 0 14px">Все сохранённые цитаты. Здесь их можно просматривать в общем доступе, а правка доступна только после входа.</p>
       <div id="quoteLibrary" class="quote-library"></div>
       <div class="actions"><button class="btn-quiet" onclick="closeModal('quoteListModal')">Закрыть</button><button class="btn-add" onclick="openQuoteEditor()">+ Новая цитата</button></div>
     </div>
@@ -154,9 +154,11 @@
     let quotes = DEFAULT_QUOTES.map(q => ({ ...q })), quoteIndex = 0, quoteTimer = null, quoteTouchX = null, quoteFavorites = new Set();
     let renderQueued = false;
     let searchDebounce = null;
+    let quotePaused = false;
     const poemGrid = $('poemsGrid');
     const searchInput = $('searchInput');
-    const status = message => { $('syncStatus').textContent = message; };
+    const syncStatus = $('syncStatus');
+    const status = message => { syncStatus.textContent = message; };
     const favoriteRef = (uid, poemId) => doc(db, 'users', uid, 'favorites', poemId);
     const quoteCollection = uid => collection(db, 'users', uid, 'quotes');
 
@@ -165,10 +167,20 @@
     window.toggleTheme = function() { const next=document.documentElement.dataset.theme==='dark'?'light':'dark'; localStorage.setItem(THEME_KEY,next); applyTheme(next); };
     window.toggleMenu = function(open) { const drawer=$('appDrawer'), backdrop=$('drawerBackdrop'); drawer.classList.toggle('open',open); backdrop.classList.toggle('open',open); drawer.setAttribute('aria-hidden', String(!open)); };
     applyTheme(localStorage.getItem(THEME_KEY)==='light'?'light':'dark');
-    window.openQuoteList = function(){
-      renderQuoteLibrary();
-      $('quoteListModal').classList.add('active');
-    };
+
+    function pauseQuoteRotation() {
+      quotePaused = true;
+      const shelf = $('quoteShelf');
+      if (shelf) shelf.classList.add('is-paused');
+      if (quoteTimer) { clearInterval(quoteTimer); quoteTimer = null; }
+    }
+    function resumeQuoteRotation() {
+      quotePaused = false;
+      const shelf = $('quoteShelf');
+      if (shelf) shelf.classList.remove('is-paused');
+      if ((quotes.length || DEFAULT_QUOTES.length) > 1) startQuoteTimer();
+    }
+
     function renderQuoteLibrary(){
       const host=$('quoteLibrary'); if(!host) return;
       const visibleQuotes = quotes.length ? quotes : DEFAULT_QUOTES;
@@ -180,10 +192,12 @@
         return;
       }
       if(!quotes.length){host.innerHTML='<p class="empty-state">Цитат пока нет. Нажми «Новая цитата», чтобы добавить первую.</p>';return;}
-      host.innerHTML=quotes.map((q,i)=>`<div class="quote-item"><p>${escapeHtml(q.text)}</p><div class="quote-item-actions"><button onclick="openQuoteEditor('${escapeHtml(q.id)}')">✎ Изменить</button><button onclick="deleteQuoteById('${escapeHtml(q.id)}')">Удалить</button></div></div>`).join('');
+      host.innerHTML=quotes.map((q)=>`<div class="quote-item"><p>${escapeHtml(q.text)}</p><div class="quote-item-actions"><button onclick="openQuoteEditor('${escapeHtml(q.id)}')">✎ Изменить</button><button onclick="deleteQuoteById('${escapeHtml(q.id)}')">Удалить</button></div></div>`).join('');
     }
+    window.openQuoteList = function(){ renderQuoteLibrary(); $('quoteListModal').classList.add('active'); };
     window.showQuote=id=>{const i=quotes.findIndex(q=>q.id===id);if(i>=0){quoteIndex=i;renderQuote();closeModal('quoteListModal');toggleMenu(false);$('quoteShelf').scrollIntoView({behavior:'smooth',block:'nearest'});}}
     window.deleteQuoteById=async id=>{if(!currentUser||!id||!confirm('Удалить эту цитату?'))return;try{await deleteDoc(doc(db,'users',currentUser.uid,'quotes',id));}catch(e){alert('Не удалось удалить цитату: '+e.message);}}
+
     function fitQuoteShelf(index=quoteIndex){
       const shelf=$('quoteShelf'), track=$('quoteTrack'); if(!shelf||!track||!track.children.length)return;
       const slide=track.children[Math.max(0,Math.min(index,track.children.length-1))];
@@ -192,15 +206,15 @@
       shelf.style.height=Math.min(slide.scrollHeight,max)+'px';
     }
     function normalizeQuoteIndex(index) {
-      const count = quotes.length || 0;
+      const count = quotes.length || DEFAULT_QUOTES.length;
       if (!count) return 0;
       return ((index % count) + count) % count;
     }
     let quoteProgrammaticScroll=false;
     function scrollQuoteTo(index,smooth=true){
       const shelf=$('quoteShelf'), track=$('quoteTrack');
-      if(!shelf||!track||!track.children.length||!quotes.length)return;
-      const count=quotes.length;
+      if(!shelf||!track||!track.children.length)return;
+      const count = quotes.length || DEFAULT_QUOTES.length;
       const logicalIndex = normalizeQuoteIndex(index);
       const visualIndex = count + logicalIndex;
       const slide = track.children[visualIndex];
@@ -232,14 +246,15 @@
         const targetSlide = track.children[visualIndex];
         if(targetSlide) shelf.scrollTo({top:targetSlide.offsetTop,behavior:'auto'});
       });
-      renderQuoteLibrary(); startQuoteTimer();
+      renderQuoteLibrary();
+      if (!quotePaused) startQuoteTimer();
     }
     window.changeQuote=(delta,automatic=false)=>{
       if(!quotes.length && !DEFAULT_QUOTES.length)return;
       const activeQuotes = quotes.length ? quotes : DEFAULT_QUOTES;
       quoteIndex = normalizeQuoteIndex(quoteIndex + delta);
       scrollQuoteTo(quoteIndex,true);
-      if(!automatic)startQuoteTimer();
+      if(!automatic && !quotePaused) startQuoteTimer();
     };
     const shelf=$('quoteShelf');
     let quoteScrollDebounce=null;
@@ -266,17 +281,40 @@
           }
         }
         if(quoteScrollDebounce)clearTimeout(quoteScrollDebounce);
-        if(!quoteProgrammaticScroll)quoteScrollDebounce=setTimeout(()=>startQuoteTimer(),500);
+        if(!quoteProgrammaticScroll && !quotePaused)quoteScrollDebounce=setTimeout(()=>startQuoteTimer(),500);
       });
     },{passive:true});
-    shelf.addEventListener('touchstart',()=>{quoteProgrammaticScroll=false;},{passive:true});
-    shelf.addEventListener('wheel',()=>{quoteProgrammaticScroll=false;},{passive:true});
+    shelf.addEventListener('mouseenter', pauseQuoteRotation);
+    shelf.addEventListener('mouseleave', resumeQuoteRotation);
+    shelf.addEventListener('pointerenter', pauseQuoteRotation);
+    shelf.addEventListener('pointerleave', resumeQuoteRotation);
+    shelf.addEventListener('focusin', pauseQuoteRotation);
+    shelf.addEventListener('focusout', resumeQuoteRotation);
+    shelf.addEventListener('touchstart', pauseQuoteRotation, {passive:true});
+    shelf.addEventListener('touchend', resumeQuoteRotation, {passive:true});
+    shelf.addEventListener('touchcancel', resumeQuoteRotation, {passive:true});
     shelf.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){e.preventDefault();changeQuote(1);}if(e.key==='ArrowUp'){e.preventDefault();changeQuote(-1);}});
     window.addEventListener('resize',()=>fitQuoteShelf((quotes.length || DEFAULT_QUOTES.length) ? (quotes.length || DEFAULT_QUOTES.length) + quoteIndex : 0));
-    function startQuoteTimer(){if(quoteTimer)clearInterval(quoteTimer);quoteTimer=null;const activeQuotes = quotes.length ? quotes : DEFAULT_QUOTES;if(activeQuotes.length<2)return;quoteTimer=setInterval(()=>{if(document.hidden||!activeQuotes.length)return;window.changeQuote(1,true);},6000);}
+    function startQuoteTimer(){
+      if (quotePaused) return;
+      if (quoteTimer) clearInterval(quoteTimer);
+      quoteTimer = null;
+      const activeQuotes = quotes.length ? quotes : DEFAULT_QUOTES;
+      if (activeQuotes.length < 2) return;
+      quoteTimer = setInterval(()=>{
+        if (document.hidden || quotePaused || !activeQuotes.length) return;
+        window.changeQuote(1,true);
+      },6000);
+    }
 
-    window.openQuoteEditor=(id=null)=>{if(!currentUser)return alert('Войди через Google, чтобы сохранять цитаты в облаке.');const q=id?quotes.find(x=>x.id===id):null; $('quoteId').value=q?.id || ''; $('quoteInput').value=q?.text || ''; $('quoteModalTitle').textContent=q?'Редактировать цитату':'Новая цитата'; $('deleteQuoteBtn').style.display=q?'block':'none'; $('quoteModal').classList.add('active');};
-    window.saveQuote=async()=>{if(!currentUser)return alert('Войди через Google.');const text=$('quoteInput').value.trim();if(!text)return alert('Напиши текст цитаты.');const id=$('quoteId').value || crypto.randomUUID();try{await setDoc(doc(db,'users',currentUser.uid,'quotes',id),{text,createdAt:Date.now(),updatedAt:Date.now()});closeModal('quoteModal');}catch(e){alert('Не удалось сохранить цитату: '+e.message);}};
+    window.openQuoteEditor=(id=null)=>{
+      if(!currentUser){
+        alert('Добавление цитаты доступно только после входа в аккаунт.');
+        return;
+      }
+      const q=id?quotes.find(x=>x.id===id):null; $('quoteId').value=q?.id || ''; $('quoteInput').value=q?.text || ''; $('quoteModalTitle').textContent=q?'Редактировать цитату':'Новая ци��ата'; $('deleteQuoteBtn').style.display=q?'block':'none'; $('quoteModal').classList.add('active');
+    };
+    window.saveQuote=async()=>{if(!currentUser)return alert('Войдите в аккаунт, чтобы сохранить цитату.');const text=$('quoteInput').value.trim();if(!text)return alert('Напиши текст цитаты.');const id=$('quoteId').value || crypto.randomUUID();try{await setDoc(doc(db,'users',currentUser.uid,'quotes',id),{text,createdAt:Date.now(),updatedAt:Date.now()});closeModal('quoteModal');}catch(e){alert('Не удалось сохранить цитату: '+e.message);}};
     window.deleteQuote=async()=>{const id=$('quoteId').value;if(!currentUser||!id||!confirm('Удалить эту цитату?'))return;try{await deleteDoc(doc(db,'users',currentUser.uid,'quotes',id));closeModal('quoteModal');}catch(e){alert('Не удалось удалить цитату: '+e.message);}};
     window.toggleQuoteFavoriteById=async id=>{if(!currentUser||!id)return;const ref=doc(db,'users',currentUser.uid,'quoteFavorites',id);try{if(quoteFavorites.has(id))await deleteDoc(ref);else await setDoc(ref,{quoteId:id,createdAt:Date.now()});}catch(e){alert('Не удалось обновить избранное: '+e.message);}};
     renderQuote();
@@ -290,14 +328,7 @@
       if (categories.includes(previous)) select.value = previous;
     }
     function normalizeSearch(value) { return String(value ?? '').toLocaleLowerCase().replace(/[ıİ]/g,'i').replace(/[ý]/g,'y').replace(/[ş]/g,'s').replace(/[ç]/g,'c').replace(/[ä]/g,'a').replace(/[ö]/g,'o').replace(/[ü]/g,'u').replace(/[ğ]/g,'g').replace(/[\s\p{P}\p{S}]+/gu,' ').trim(); }
-    function scheduleRender() {
-      if (renderQueued) return;
-      renderQueued = true;
-      requestAnimationFrame(() => {
-        renderQueued = false;
-        render();
-      });
-    }
+    function scheduleRender() { if (renderQueued) return; renderQueued = true; requestAnimationFrame(() => { renderQueued = false; render(); }); }
     function render() {
       $('poemCount').textContent = poems.length.toLocaleString('ru-RU');
       const query = normalizeSearch(searchInput.value);
@@ -374,7 +405,7 @@
       catch(e) { alert('Не удалось удалить стих: '+e.message); }
     };
     window.toggleFavorite = async function(id) {
-      if(!currentUser) { alert('Войди через Google, чтобы синхр��низировать избранное между устройствами.'); return; }
+      if(!currentUser) { alert('Войдите через Google, чтобы синхронизировать избранное между устройствами.'); return; }
       const ref=favoriteRef(currentUser.uid,id);
       try { if(favorites.has(id)) await deleteDoc(ref); else await setDoc(ref,{poemId:id,createdAt:Date.now()}); }
       catch(e) { alert('Не удалось обновить избранное: '+e.message+'. Проверь правила Firestore.'); }
@@ -388,12 +419,7 @@
 
     window.exportBackup = async function() {
       if(!admin) return alert('Экспорт доступен только администратору.');
-      try {
-        const backup={format:'moja-poeziya-backup',version:1,exportedAt:new Date().toISOString(),projectId:firebaseConfig.projectId,poems:poems.map(({id,title,body,date,category,updatedAt})=>({id,title,body,date,category,updatedAt}))};
-        const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}), url=URL.createObjectURL(blob), a=document.createElement('a');
-        a.href=url; a.download='moja-poeziya-backup-'+new Date().toISOString().slice(0,10)+'.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-        alert('Резервная копия подготовлена. Сохрани файл в надёжном месте.');
-      } catch(e) { alert('Не удалось создать резервную копию: '+e.message); }
+      try { const backup={format:'moja-poeziya-backup',version:1,exportedAt:new Date().toISOString(),projectId:firebaseConfig.projectId,poems:poems.map(({id,title,body,date,category,updatedAt})=>({id,title,body,date,category,updatedAt}))}; const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}), url=URL.createObjectURL(blob), a=document.createElement('a'); a.href=url; a.download='moja-poeziya-backup-'+new Date().toISOString().slice(0,10)+'.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); alert('Резервная копия подготовлена. Сохрани файл в надёжном месте.'); } catch(e) { alert('Не удалось создать резервную копию: '+e.message); }
     };
     window.importBackup = async function(event) {
       const file=event.target.files?.[0]; event.target.value=''; if(!file) return;
