@@ -178,15 +178,22 @@
       const max=Math.max(150,Math.floor(window.innerHeight*.42));
       shelf.style.height=Math.min(slide.scrollHeight,max)+'px';
     }
+    function normalizeQuoteIndex(index) {
+      const count = quotes.length || 0;
+      if (!count) return 0;
+      return ((index % count) + count) % count;
+    }
     let quoteProgrammaticScroll=false;
     function scrollQuoteTo(index,smooth=true){
-      const shelf=$('quoteShelf'),track=$('quoteTrack');
-      if(!shelf||!track||!track.children.length)return;
+      const shelf=$('quoteShelf'), track=$('quoteTrack');
+      if(!shelf||!track||!track.children.length||!quotes.length)return;
       const count=quotes.length;
-      const visualIndex=count ? count + ((index % count) + count) % count : 0;
-      const slide=track.children[visualIndex];
+      const logicalIndex = normalizeQuoteIndex(index);
+      const visualIndex = count + logicalIndex;
+      const slide = track.children[visualIndex];
       if(!slide)return;
       fitQuoteShelf(visualIndex);
+      quoteIndex = logicalIndex;
       quoteProgrammaticScroll=true;
       shelf.scrollTo({top:slide.offsetTop,behavior:smooth?'smooth':'auto'});
       if(quoteProgrammaticReset)clearTimeout(quoteProgrammaticReset);
@@ -199,17 +206,23 @@
         const message=currentUser?'Добавь первую цитату в свой личный блокнот.':'Войди через Google, чтобы добавлять и сохранять цитаты.';
         track.innerHTML=`<article class="quote-slide"><div class="quote-text">${escapeHtml(message)}</div></article>`;
         quoteIndex=0;
-      } else {
-        quoteIndex=((quoteIndex%quotes.length)+quotes.length)%quotes.length;
-        const sequence=[...quotes,...quotes,...quotes];
-        track.innerHTML=sequence.map((q,i)=>`<article class="quote-slide" data-quote-index="${i%quotes.length}" data-visual-index="${i}"><div class="quote-text">“${escapeHtml(q.text)}”</div><div class="quote-meta"><span class="quote-micro">${escapeHtml(q.author || 'Личное')}</span></div></article>`).join('');
+        return;
       }
-      requestAnimationFrame(()=>{fitQuoteShelf(quotes.length ? quotes.length+quoteIndex : 0);scrollQuoteTo(quoteIndex,false);});
+      quoteIndex = normalizeQuoteIndex(quoteIndex);
+      const sequence=[...quotes,...quotes,...quotes];
+      track.innerHTML=sequence.map((q,i)=>`<article class="quote-slide" data-quote-index="${i%quotes.length}" data-visual-index="${i}"><div class="quote-text">“${escapeHtml(q.text)}”</div><div class="quote-meta"><span class="quote-micro">${escapeHtml(q.author || 'Личное')}</span></div></article>`).join('');
+      requestAnimationFrame(()=>{
+        const count=quotes.length;
+        const visualIndex = count + quoteIndex;
+        fitQuoteShelf(visualIndex);
+        const targetSlide = track.children[visualIndex];
+        if(targetSlide) shelf.scrollTo({top:targetSlide.offsetTop,behavior:'auto'});
+      });
       renderQuoteLibrary(); startQuoteTimer();
     }
     window.changeQuote=(delta,automatic=false)=>{
       if(!quotes.length)return;
-      quoteIndex=(quoteIndex+delta+quotes.length)%quotes.length;
+      quoteIndex = normalizeQuoteIndex(quoteIndex + delta);
       scrollQuoteTo(quoteIndex,true);
       if(!automatic)startQuoteTimer();
     };
@@ -221,14 +234,20 @@
       if(quoteScrollFrame) return;
       quoteScrollFrame=requestAnimationFrame(()=>{
         quoteScrollFrame=null;
-        const slides=[...$('quoteTrack').children];let nearest=0,best=Infinity;
+        const slides=[...$('quoteTrack').children];
+        if(!slides.length)return;
+        let nearest=0,best=Infinity;
         slides.forEach((el,i)=>{const d=Math.abs(el.offsetTop-shelf.scrollTop);if(d<best){best=d;nearest=i;}});
         const count=quotes.length;
-        const logical=nearest%count;
-        quoteIndex=logical;
+        const logical=nearest % count;
+        quoteIndex = logical;
         fitQuoteShelf(nearest);
-        if(nearest<count || nearest>=count*2){
-          if(!quoteProgrammaticScroll) requestAnimationFrame(()=>scrollQuoteTo(logical,false));
+        if(nearest < count || nearest >= count * 2){
+          if(!quoteProgrammaticScroll){
+            const targetVisual = count + logical;
+            const targetSlide = $('quoteTrack').children[targetVisual];
+            if(targetSlide) requestAnimationFrame(()=>shelf.scrollTo({top:targetSlide.offsetTop,behavior:'auto'}));
+          }
         }
         if(quoteScrollDebounce)clearTimeout(quoteScrollDebounce);
         if(!quoteProgrammaticScroll)quoteScrollDebounce=setTimeout(()=>startQuoteTimer(),500);
@@ -237,7 +256,7 @@
     shelf.addEventListener('touchstart',()=>{quoteProgrammaticScroll=false;},{passive:true});
     shelf.addEventListener('wheel',()=>{quoteProgrammaticScroll=false;},{passive:true});
     shelf.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){e.preventDefault();changeQuote(1);}if(e.key==='ArrowUp'){e.preventDefault();changeQuote(-1);}});
-    window.addEventListener('resize',()=>fitQuoteShelf(quotes.length ? quotes.length+quoteIndex : 0));
+    window.addEventListener('resize',()=>fitQuoteShelf(quotes.length ? quotes.length + quoteIndex : 0));
     function startQuoteTimer(){if(quoteTimer)clearInterval(quoteTimer);quoteTimer=null;if(quotes.length<2)return;quoteTimer=setInterval(()=>{if(document.hidden||!quotes.length)return;window.changeQuote(1,true);},6000);}
 
     window.openQuoteEditor=(id=null)=>{if(!currentUser)return alert('Войди через Google, чтобы сохранять цитаты в облаке.');const q=id?quotes.find(x=>x.id===id):null; $('quoteId').value=q?.id || ''; $('quoteInput').value=q?.text || ''; $('quoteModalTitle').textContent=q?'Редактировать цитату':'Новая цитата'; $('deleteQuoteBtn').style.display=q?'block':'none'; $('quoteModal').classList.add('active');};
